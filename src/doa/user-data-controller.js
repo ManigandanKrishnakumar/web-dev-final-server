@@ -3,8 +3,10 @@ const { QUERIES } = require('../constants/queries');
 const { User } = require('../Interfaces/AppInterfaces');
 const { ResponseObject } = require('../Interfaces/ResponseObjects');
 const { executeQuery } = require('../utils/db-utils');
-const {decryptResponse} = require('../asym-auth-server-sdk/ChallengeResponse');
-const {getPublicKey} = require('./Sign-in-doa');
+const {
+    decryptResponse,
+} = require('../asym-auth-server-sdk/ChallengeResponse');
+const { getPublicKey } = require('./Sign-in-doa');
 const { get } = require('http');
 var getPem = require('rsa-pem-from-mod-exp');
 
@@ -19,7 +21,6 @@ const checkUserExists = async (username) => {
         const result = await executeQuery(QUERIES.USERS.CHECK_USERNAME, [
             username,
         ]);
-       
 
         responseObject.isSuccess = true;
         responseObject.payload = result[0];
@@ -41,7 +42,7 @@ const createUser = async (user) => {
         const result = await executeQuery(QUERIES.USERS.CREATE_USER, [
             user.username,
             JSON.stringify(user.publicKey),
-            JSON.stringify(user.metaData)
+            JSON.stringify(user.metaData),
         ]);
         responseObject.isSuccess = true;
         return responseObject;
@@ -63,8 +64,9 @@ const extractUser = async (username, userRole) => {
         const dp = userInfo.dp;
         const email = userInfo.email;
         const displayName = userInfo.displayName;
+        const apiKey = userInfo.apiKey;
 
-        return {dp, email, displayName, userRole, username}; 
+        return { dp, email, displayName, userRole, username, apiKey };
 
         // responseObject.isSuccess = true;
         // responseObject.payload = result;
@@ -76,29 +78,27 @@ const extractUser = async (username, userRole) => {
     }
 };
 
-
-
 const updateUser = async (metaData, username, decodeduserName) => {
     const responseObject = new ResponseObject();
     try {
         if (username === decodeduserName) {
             await executeQuery(QUERIES.USERS.UPDATE_USER, [
-            JSON.stringify(metaData),
-            username,
-        ]);
-        }
-        else {
+                JSON.stringify(metaData),
+                username,
+            ]);
+        } else {
             throw new Error('Not authenticated');
         }
-        const result = await executeQuery(QUERIES.USERS.EXTRACT_USERINFO,[username]);
+        const result = await executeQuery(QUERIES.USERS.EXTRACT_USERINFO, [
+            username,
+        ]);
         responseObject.isSuccess = true;
         responseObject.payload = result;
         return responseObject;
     } catch (e) {
         if (e.message === 'Not authenticated')
             throw new Error('Not authenticated to update info');
-        else
-            throw new Error('Internal server error');
+        else throw new Error('Internal server error');
     }
 };
 
@@ -106,23 +106,21 @@ const DeleteUser = async (username, decodeduserName, encryptedusername) => {
     const responseObject = new ResponseObject();
     try {
         if (username === decodeduserName) {
-            
             const publicKey = await getPublicKey(username);
             const data = JSON.parse(publicKey);
             var pem = getPem(data.modulus, data.exponent);
-            const isVerified = await decryptResponse(encryptedusername, username, pem);
+            const isVerified = await decryptResponse(
+                encryptedusername,
+                username,
+                pem
+            );
 
-            if (isVerified){
-
+            if (isVerified) {
                 await executeQuery(QUERIES.USERS.DELETE_USER, [username]);
-
-            }
-            else {
+            } else {
                 throw new Error('Not authenticated');
             }
-            
-        }
-        else {
+        } else {
             throw new Error('Not signed In');
         }
         responseObject.isSuccess = true;
@@ -131,16 +129,14 @@ const DeleteUser = async (username, decodeduserName, encryptedusername) => {
     } catch (e) {
         if (e.message === 'Not authenticated')
             throw new Error('Not authenticated to delete info');
-        else
-            throw new Error('Internal server error');
+        else throw new Error('Internal server error');
     }
 };
-
 
 module.exports = {
     checkUserExists,
     createUser,
     updateUser,
     extractUser,
-    DeleteUser
+    DeleteUser,
 };
