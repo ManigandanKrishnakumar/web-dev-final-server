@@ -13,7 +13,7 @@ const QUERIES = {
     },
     ADMIN: {
         LIST_USERS: `SELECT user_name, user_role, meta_data FROM users`,
-        ADMIN_UPDATES_USER: `UPDATE users SET user_role = ? WHERE user_name = ?`,
+        ADMIN_UPDATES_USER: `UPDATE users SET user_role = ?, meta_data = ? WHERE user_name = ?`,
         ADMIN_DELETES_USER: `DELETE FROM users WHERE user_name = ?`,
     },
     SPEED_TEST: {

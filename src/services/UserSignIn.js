@@ -51,14 +51,20 @@ const SignIn = async (response, signature, challenge) => {
             challenge,
             pem
         );
-        const { dp, email, displayName, userRole } = await getUserMetadata(
-            username
-        );
+        const { dp, email, displayName, userRole, apiKey } =
+            await getUserMetadata(username);
         const token = jwt.sign({ username, userRole }, process.env.JWT_SECRET, {
             expiresIn: '1h',
         });
 
-        responseObject.payload = { username, displayName, email, dp, userRole };
+        responseObject.payload = {
+            username,
+            displayName,
+            email,
+            dp,
+            userRole,
+            apiKey,
+        };
         responseObject.message = 'login successful';
         responseObject.isSuccess = true;
         return { token, responseObject };

@@ -11,19 +11,17 @@ const { executeQuery } = require('../utils/db-utils');
 const listUsers = async (decodeduserRole) => {
     const responseObject = new ResponseObject();
     try {
-        if(decodeduserRole === "Admin"){
-            const result = await executeQuery(QUERIES.ADMIN.LIST_USERS);     
+        if (decodeduserRole === 'Admin') {
+            const result = await executeQuery(QUERIES.ADMIN.LIST_USERS);
             responseObject.isSuccess = true;
             responseObject.payload = result;
             return responseObject;
-        }else{
-            throw new Error("Not Authorized");
+        } else {
+            throw new Error('Not Authorized');
         }
     } catch (e) {
-        if (e.message === "Not Authorized")
-            throw new Error("Not Authorized");
-        else
-            throw new Error("Internal server error");
+        if (e.message === 'Not Authorized') throw new Error('Not Authorized');
+        else throw new Error('Internal server error');
     }
 };
 
@@ -33,25 +31,34 @@ const listUsers = async (decodeduserRole) => {
  * @param {string} userRole
  * @param {string} decodeduserRole
  */
-const adminUpdatesUser = async (username, userRole, decodeduserRole) => {
+const adminUpdatesUser = async (
+    username,
+    userRole,
+    decodeduserRole,
+    meta_data
+) => {
     const responseObject = new ResponseObject();
     try {
-        if(decodeduserRole === "Admin"){
-            const result = await executeQuery(QUERIES.ADMIN.ADMIN_UPDATES_USER, [
-                userRole,
-                username
-            ]);     
+        if (decodeduserRole === 'Admin') {
+            if (userRole === 'No-Access-User') {
+                delete meta_data['apiKey'];
+            } else {
+                meta_data['apiKey'] = process.env.SPEED_TEST_API;
+            }
+
+            const result = await executeQuery(
+                QUERIES.ADMIN.ADMIN_UPDATES_USER,
+                [userRole, JSON.stringify(meta_data), username]
+            );
             responseObject.isSuccess = true;
             //responseObject.payload = result;
             return responseObject;
-        }else{
-            throw new Error("Not Authorized");
+        } else {
+            throw new Error('Not Authorized');
         }
     } catch (e) {
-        if (e.message === "Not Authorized")
-            throw new Error("Not Authorized");
-        else
-            throw new Error("Internal server error");
+        if (e.message === 'Not Authorized') throw new Error('Not Authorized');
+        else throw new Error('Internal server error');
     }
 };
 
@@ -63,26 +70,25 @@ const adminUpdatesUser = async (username, userRole, decodeduserRole) => {
 const adminDeletesUser = async (username, decodeduserRole) => {
     const responseObject = new ResponseObject();
     try {
-        if(decodeduserRole === "Admin"){
-            const result = await executeQuery(QUERIES.ADMIN.ADMIN_DELETES_USER, [
-                username,
-            ]);     
+        if (decodeduserRole === 'Admin') {
+            const result = await executeQuery(
+                QUERIES.ADMIN.ADMIN_DELETES_USER,
+                [username]
+            );
             responseObject.isSuccess = true;
             //responseObject.payload = result;
-            return responseObject;   
-        }else{
-            throw new Error("Not Authorized");
+            return responseObject;
+        } else {
+            throw new Error('Not Authorized');
         }
     } catch (e) {
-        if (e.message === "Not Authorized")
-            throw new Error("Not Authorized");
-        else
-            throw new Error("Internal server error");
+        if (e.message === 'Not Authorized') throw new Error('Not Authorized');
+        else throw new Error('Internal server error');
     }
 };
 
 module.exports = {
     listUsers,
     adminUpdatesUser,
-    adminDeletesUser
+    adminDeletesUser,
 };
