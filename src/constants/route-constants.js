@@ -26,6 +26,10 @@ const ROUTES = {
         SAVE_TEST: '/save',
         FETCH: '/fetch',
     },
+    ACCESS_REQUESTS: {
+        BASE: '/access-requests',
+        FETCH_ALL: '/fetch-all',
+    },
 };
 
 const API_ROUTES = {
@@ -33,6 +37,7 @@ const API_ROUTES = {
     USER: `${ROUTES.BASE}${ROUTES.USER.BASE}`,
     ADMIN: `${ROUTES.BASE}${ROUTES.ADMIN.BASE}`,
     SPEEDTEST: `${ROUTES.BASE}${ROUTES.SPEEDTEST.BASE}`,
+    ACCESS_REQUESTS: `${ROUTES.BASE}${ROUTES.ACCESS_REQUESTS.BASE}`,
 };
 
 module.exports = {

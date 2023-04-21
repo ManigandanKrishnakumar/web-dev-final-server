@@ -13,14 +13,16 @@ const { dbConfig } = require('./src/utils/db-utils');
 const { setCORSHeaders } = require('./src/middlewares/CORS');
 const { adminRouter } = require('./src/routes/admin');
 
+const http = require('http');
+const { Server } = require('socket.io');
+const { addRequest } = require('./src/services/AddRequest');
+const { accessRequestRouter } = require('./src/routes/access-requests');
+
 require('dotenv').config();
 
 const app = express();
+const server = http.createServer(app);
 const server_port = 5000;
-
-app.listen(server_port, () => {
-    console.log('\nPasswordless Auth Server listening on port', server_port);
-});
 
 // DB connection
 dbConfig();
@@ -41,6 +43,7 @@ app.use(API_ROUTES.AUTH, authRouter);
 app.use(API_ROUTES.USER, userRouter);
 app.use(API_ROUTES.ADMIN, adminRouter);
 app.use(API_ROUTES.SPEEDTEST, speedTestRouter);
+app.use(API_ROUTES.ACCESS_REQUESTS, accessRequestRouter);
 
 // 404 page
 
@@ -48,4 +51,16 @@ app.use((req, res) => {
     res.status(404).json(
         new ResponseObject(false, ERR_MESSAGES.GENERAL.URL_NOT_AVAILABLE)
     );
+});
+
+const io = new Server(server, { cors: { origin: '*' } });
+io.on('connection', (socket) => {
+    socket.on('request-access', async (value) => {
+        const data = await addRequest(value);
+        io.timeout(5000).emit('access-requested', data);
+    });
+});
+
+server.listen(server_port, () => {
+    console.log('\nPasswordless Auth Server listening on port', server_port);
 });
