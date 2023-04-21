@@ -19,6 +19,23 @@ const fetchAllRequests = async () => {
     }
 };
 
+const deleteRequest = async (id) => {
+    const responseObject = new ResponseObject();
+
+    try {
+        const result = await executeQuery(QUERIES.REQUESTS.DELETE, [id]);
+        responseObject.isSuccess = true;
+        responseObject.payload = result;
+        return responseObject;
+    } catch (error) {
+        console.log(error);
+        responseObject.isSuccess = false;
+        responseObject.message = ERR_MESSAGES.GENERAL.ERR_MSG;
+        return responseObject;
+    }
+};
+
 module.exports = {
     fetchAllRequests,
+    deleteRequest,
 };

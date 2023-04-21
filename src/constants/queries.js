@@ -24,6 +24,7 @@ const QUERIES = {
         INSERT: `INSERT INTO requests (user_name, time_stamp) VALUES (?, ?);`,
         FETCH_ALL: `  select u.user_name, u.user_role, u.meta_data, r.time_stamp, r.id from users u right join requests r on u.user_name = r.user_name ORDER BY time_stamp DESC`,
         FETCH_BY_ID: `select u.user_name, u.user_role, u.meta_data, r.time_stamp, r.id from users u right join (SELECT * from requests where id = ?)as r on u.user_name = r.user_name`,
+        DELETE: `DELETE FROM requests WHERE id = ?`,
     },
 };
 

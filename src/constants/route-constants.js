@@ -29,6 +29,8 @@ const ROUTES = {
     ACCESS_REQUESTS: {
         BASE: '/access-requests',
         FETCH_ALL: '/fetch-all',
+        DELETE: '/delete',
+        APPROVE: '/approve',
     },
 };
 
