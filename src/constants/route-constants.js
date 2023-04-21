@@ -13,6 +13,7 @@ const ROUTES = {
         CHECK_USERNAME: '/check-username',
         UPDATE_USER: '/update-user',
         DELETE_USER: '/delete-user',
+        SEARCH_USER: "/search-user",
         LOGGED_IN: '/logged-in',
     },
     ADMIN: {

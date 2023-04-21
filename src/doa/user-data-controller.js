@@ -67,10 +67,6 @@ const extractUser = async (username, userRole) => {
         const apiKey = userInfo.apiKey;
 
         return { dp, email, displayName, userRole, username, apiKey };
-
-        // responseObject.isSuccess = true;
-        // responseObject.payload = result;
-        // return responseObject;
     } catch (e) {
         responseObject.isSuccess = false;
         responseObject.message = ERR_MESSAGES.GENERAL.ERR_MSG;
@@ -101,6 +97,34 @@ const updateUser = async (metaData, username, decodeduserName) => {
         else throw new Error('Internal server error');
     }
 };
+
+const SearchUser = async (username, decodeduserRole) => {
+    const responseObject = new ResponseObject();
+    
+    try {
+       
+        if (decodeduserRole === "Admin") {
+            
+            const result = await executeQuery(QUERIES.USERS.SEARCH_USER, [`%${username}%`]);
+            console.log(result);
+            responseObject.isSuccess = true;
+            responseObject.payload = result;
+        }
+        else {
+            throw new Error('Not an Admin');
+        }
+    
+   
+        return responseObject;
+    } catch (e) {
+        if (e.message === 'Not an Admin')
+            throw new Error('Not authenticated to search info');
+        else
+            throw new Error('Internal server error');
+    }
+};
+
+
 
 const DeleteUser = async (username, decodeduserName, encryptedusername) => {
     const responseObject = new ResponseObject();
@@ -139,4 +163,5 @@ module.exports = {
     updateUser,
     extractUser,
     DeleteUser,
+    SearchUser
 };
