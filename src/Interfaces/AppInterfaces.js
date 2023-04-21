@@ -22,6 +22,8 @@ class SpeedTest {
     testDate;
     testServer;
     upload;
+    isp;
+    address;
 
     constructor(
         _user_name = '',
@@ -34,7 +36,9 @@ class SpeedTest {
         _maxUpload = '',
         _testDate = '',
         _testServer = '',
-        _upload = ''
+        _upload = '',
+        _isp = '',
+        _address = ''
     ) {
         this.user_name = _user_name;
         this.download = _download;
@@ -46,6 +50,8 @@ class SpeedTest {
         this.maxUpload = _maxUpload;
         this.testDate = _testDate;
         this.upload = _upload;
+        this.isp = _isp;
+        this.address = _address;
     }
 }
 
