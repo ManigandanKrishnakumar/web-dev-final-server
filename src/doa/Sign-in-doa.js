@@ -3,13 +3,12 @@ const { executeQuery } = require('../utils/db-utils');
 
 //retrieves corresponding public key from table
 const getPublicKey = async (user) => {
-    
     try {
         const result = await executeQuery(QUERIES.SIGN_IN.EXTRACT_PUBLICKEY, [
             user,
         ]);
-        
-        return result[0].public_key; 
+
+        return result[0].public_key;
     } catch (e) {
         throw new Error('username is not present');
     }
@@ -25,16 +24,15 @@ const getUserMetadata = async (user) => {
         const email = userInfo.email;
         const displayName = userInfo.displayName;
         const userRole = result[0].user_role;
+        const apiKey = userInfo.apiKey;
 
-        return {dp, email, displayName, userRole}; 
+        return { dp, email, displayName, userRole, apiKey };
     } catch (e) {
         throw new Error('username is not present');
     }
 };
 
-
-
 module.exports = {
     getPublicKey,
-    getUserMetadata
+    getUserMetadata,
 };
