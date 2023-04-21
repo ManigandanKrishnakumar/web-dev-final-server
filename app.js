@@ -8,6 +8,7 @@ const { API_ROUTES } = require('./src/constants/route-constants');
 const { ResponseObject } = require('./src/Interfaces/ResponseObjects');
 const { authRouter } = require('./src/routes/auth');
 const { userRouter } = require('./src/routes/user');
+const { speedTestRouter } = require('./src/routes/speedTest');
 const { dbConfig } = require('./src/utils/db-utils');
 const { setCORSHeaders } = require('./src/middlewares/CORS');
 const { adminRouter } = require('./src/routes/admin');
@@ -39,6 +40,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(API_ROUTES.AUTH, authRouter);
 app.use(API_ROUTES.USER, userRouter);
 app.use(API_ROUTES.ADMIN, adminRouter);
+app.use(API_ROUTES.SPEEDTEST, speedTestRouter);
 
 // 404 page
 

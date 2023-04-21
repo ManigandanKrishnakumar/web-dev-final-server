@@ -16,6 +16,10 @@ const QUERIES = {
         ADMIN_UPDATES_USER: `UPDATE users SET user_role = ?, meta_data = ? WHERE user_name = ?`,
         ADMIN_DELETES_USER: `DELETE FROM users WHERE user_name = ?`,
     },
+    SPEED_TEST: {
+        SAVE_TEST: `INSERT INTO speedTests (id, user_name, download, hostname, ip_address, jitter, latency, maxDownload, maxUpload, testDate, testServer, upload) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        FETCH_TESTS: `SELECT * FROM speedTests WHERE user_name = ? ORDER BY testDate DESC`,
+    },
 };
 
 module.exports = { QUERIES };

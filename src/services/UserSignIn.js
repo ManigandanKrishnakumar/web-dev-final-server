@@ -12,6 +12,7 @@ dotenv.config();
 
 const GetChallenge = async (username) => {
     const responseObject = new ResponseObject();
+    console.log(username);
     try {
         const userExists = await checkUserExists(username);
 
