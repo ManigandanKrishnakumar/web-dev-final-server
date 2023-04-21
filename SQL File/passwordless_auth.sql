@@ -22,6 +22,8 @@ CREATE TABLE `speedTests` (
   `testDate` DATETIME NOT NULL,
   `testServer` VARCHAR(40),
   `upload` DOUBLE,
+  `isp` VARCHAR(40),
+  `address` VARCHAR(40),
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_name`) REFERENCES `users`(`user_name`));
 

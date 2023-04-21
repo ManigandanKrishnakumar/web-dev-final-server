@@ -23,6 +23,8 @@ const saveTest = async (speedTest) => {
             speedTest.testDate,
             speedTest.testServer,
             speedTest.upload,
+            speedTest.isp,
+            speedTest.address,
         ]);
         responseObject.isSuccess = true;
         return responseObject;

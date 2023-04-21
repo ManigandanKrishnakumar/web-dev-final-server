@@ -21,6 +21,8 @@ speedTestRouter.post(
             testDate,
             testServer,
             upload,
+            isp,
+            address,
         } = req.body;
         const speedTest = new SpeedTest(
             req.decodeduserName,
@@ -33,7 +35,9 @@ speedTestRouter.post(
             maxUpload,
             new Date(testDate),
             testServer,
-            upload
+            upload,
+            isp,
+            address
         );
         try {
             const result = await saveTest(speedTest);
