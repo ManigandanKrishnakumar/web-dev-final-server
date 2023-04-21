@@ -71,7 +71,7 @@ accessRequestRouter.post(
 
             res.status(200).json(result);
         } catch (error) {
-            console.log(error)
+            console.log(error);
             if (error.message === 'Not Authorized') {
                 const result = new ResponseObject(
                     false,

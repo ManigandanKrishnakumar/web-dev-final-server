@@ -45,7 +45,6 @@ const adminUpdatesUser = async (
             } else {
                 meta_data['apiKey'] = process.env.SPEED_TEST_API;
             }
-
             const result = await executeQuery(
                 QUERIES.ADMIN.ADMIN_UPDATES_USER,
                 [userRole, JSON.stringify(meta_data), username]
@@ -57,6 +56,7 @@ const adminUpdatesUser = async (
             throw new Error('Not Authorized');
         }
     } catch (e) {
+        console.log(e);
         if (e.message === 'Not Authorized') throw new Error('Not Authorized');
         else throw new Error('Internal server error');
     }
