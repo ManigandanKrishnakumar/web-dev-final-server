@@ -19,6 +19,7 @@ const QUERIES = {
     SPEED_TEST: {
         SAVE_TEST: `INSERT INTO speedTests (id, user_name, download, hostname, ip_address, jitter, latency, maxDownload, maxUpload, testDate, testServer, upload, isp, address) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         FETCH_TESTS: `SELECT * FROM speedTests WHERE user_name = ? ORDER BY testDate DESC`,
+        DELETE_TESTS: `DELETE FROM speedTests WHERE user_name = ?`,
     },
     REQUESTS: {
         INSERT: `INSERT INTO requests (user_name, time_stamp) VALUES (?, ?);`,
