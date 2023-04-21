@@ -20,6 +20,11 @@ const QUERIES = {
         SAVE_TEST: `INSERT INTO speedTests (id, user_name, download, hostname, ip_address, jitter, latency, maxDownload, maxUpload, testDate, testServer, upload) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         FETCH_TESTS: `SELECT * FROM speedTests WHERE user_name = ? ORDER BY testDate DESC`,
     },
+    REQUESTS: {
+        INSERT: `INSERT INTO requests (user_name, time_stamp) VALUES (?, ?);`,
+        FETCH_ALL: `  select u.user_name, u.user_role, u.meta_data, r.time_stamp, r.id from users u right join requests r on u.user_name = r.user_name ORDER BY time_stamp DESC`,
+        FETCH_BY_ID: `select u.user_name, u.user_role, u.meta_data, r.time_stamp, r.id from users u right join (SELECT * from requests where id = ?)as r on u.user_name = r.user_name`,
+    },
 };
 
 module.exports = { QUERIES };

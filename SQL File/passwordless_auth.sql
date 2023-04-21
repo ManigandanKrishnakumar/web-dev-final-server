@@ -24,3 +24,10 @@ CREATE TABLE `speedTests` (
   `upload` DOUBLE,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_name`) REFERENCES `users`(`user_name`));
+
+  CREATE TABLE `requests` (
+  `id` INTEGER AUTO_INCREMENT,
+  `user_name` VARCHAR(40) NOT NULL,
+  `time_stamp` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`user_name`) REFERENCES `users`(`user_name`));

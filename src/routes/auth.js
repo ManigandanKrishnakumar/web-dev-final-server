@@ -31,7 +31,6 @@ authRouter.post(ROUTES.AUTH.SIGN_IN, async (req, res) => {
             signature,
             challenge
         );
-        console.log(responseObject);
         const expirationTime = new Date(Date.now() + 3600 * 100);
         res.cookie('jwt', token, {
             httpOnly: true,

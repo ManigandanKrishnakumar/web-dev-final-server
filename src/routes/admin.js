@@ -16,7 +16,6 @@ adminRouter.get(
     authenticateToken,
     async (req, res) => {
         try {
-            //console.log("From admin.js, decodeduserRole", req.decodeduserRole);
             const result = await listUsers(req.decodeduserRole);
             res.status(200).json(result);
         } catch (error) {
