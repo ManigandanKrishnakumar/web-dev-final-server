@@ -15,6 +15,7 @@ const ROUTES = {
         DELETE_USER: '/delete-user',
         SEARCH_USER: "/search-user",
         LOGGED_IN: '/logged-in',
+        LIST_USERS: '/list-users',
     },
     ADMIN: {
         BASE: '/admin-dashboard',

@@ -7,7 +7,8 @@ const {
     updateUser,
     extractUser,
     DeleteUser,
-    SearchUser
+    SearchUser,
+    UserInfoExtract
 } = require('../doa/user-data-controller');
 const { ResponseObject } = require('../Interfaces/ResponseObjects');
 const { ERR_MESSAGES } = require('../constants/app-constants');
@@ -144,6 +145,19 @@ userRouter.delete(
         }
     }
 );
+
+userRouter.get(ROUTES.USER.LIST_USERS, async (req, res) => {
+    try {
+        const result = await UserInfoExtract();
+        res.status(200).json(result);
+    } catch (error) {
+        const result = new ResponseObject(
+            false,
+            ERR_MESSAGES.GENERAL.INTERNAL_SERVER_ERR
+        );
+        res.status(500).json(result);
+    }
+});
 
 module.exports = {
     userRouter,

@@ -3,6 +3,8 @@ const { ROUTES } = require('../constants/route-constants');
 const { authenticateToken } = require('../middlewares/jwtverify');
 const { SpeedTest } = require('../Interfaces/AppInterfaces');
 const { saveTest, fetchTests } = require('../doa/speed-test-data-controller');
+const { ResponseObject } = require('../Interfaces/ResponseObjects');
+const { ERR_MESSAGES } = require('../constants/app-constants');
 
 const speedTestRouter = Router();
 

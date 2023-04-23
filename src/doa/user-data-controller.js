@@ -74,6 +74,22 @@ const extractUser = async (username, userRole) => {
     }
 };
 
+
+const UserInfoExtract = async () => {
+    const responseObject = new ResponseObject();
+    try {
+            const result = await executeQuery(QUERIES.USERS.LIST_USERS);
+            responseObject.isSuccess = true;
+            responseObject.payload = result;
+            return responseObject;
+        }
+     catch (e) {
+        responseObject.isSuccess = false;
+        responseObject.message = ERR_MESSAGES.GENERAL.ERR_MSG;
+        return responseObject;
+    }
+};
+
 const updateUser = async (metaData, username, decodeduserName) => {
     const responseObject = new ResponseObject();
     try {
@@ -163,5 +179,6 @@ module.exports = {
     updateUser,
     extractUser,
     DeleteUser,
-    SearchUser
+    SearchUser,
+    UserInfoExtract
 };
