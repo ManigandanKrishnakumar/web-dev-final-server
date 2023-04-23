@@ -74,16 +74,30 @@ const extractUser = async (username, userRole) => {
     }
 };
 
-
 const UserInfoExtract = async () => {
     const responseObject = new ResponseObject();
     try {
-            const result = await executeQuery(QUERIES.USERS.LIST_USERS);
-            responseObject.isSuccess = true;
-            responseObject.payload = result;
-            return responseObject;
-        }
-     catch (e) {
+        const result = await executeQuery(QUERIES.USERS.LIST_USERS);
+        responseObject.isSuccess = true;
+        responseObject.payload = result;
+        return responseObject;
+    } catch (e) {
+        responseObject.isSuccess = false;
+        responseObject.message = ERR_MESSAGES.GENERAL.ERR_MSG;
+        return responseObject;
+    }
+};
+
+const PublicInfoExtract = async (username) => {
+    const responseObject = new ResponseObject();
+    try {
+        const result = await executeQuery(QUERIES.USERS.PUBLIC_INFO, [
+            username,
+        ]);
+        responseObject.isSuccess = true;
+        responseObject.payload = result;
+        return responseObject;
+    } catch (e) {
         responseObject.isSuccess = false;
         responseObject.message = ERR_MESSAGES.GENERAL.ERR_MSG;
         return responseObject;
@@ -116,31 +130,26 @@ const updateUser = async (metaData, username, decodeduserName) => {
 
 const SearchUser = async (username, decodeduserRole) => {
     const responseObject = new ResponseObject();
-    
+
     try {
-       
-        if (decodeduserRole === "Admin") {
-            
-            const result = await executeQuery(QUERIES.USERS.SEARCH_USER, [`%${username}%`]);
+        if (decodeduserRole === 'Admin') {
+            const result = await executeQuery(QUERIES.USERS.SEARCH_USER, [
+                `%${username}%`,
+            ]);
             console.log(result);
             responseObject.isSuccess = true;
             responseObject.payload = result;
-        }
-        else {
+        } else {
             throw new Error('Not an Admin');
         }
-    
-   
+
         return responseObject;
     } catch (e) {
         if (e.message === 'Not an Admin')
             throw new Error('Not authenticated to search info');
-        else
-            throw new Error('Internal server error');
+        else throw new Error('Internal server error');
     }
 };
-
-
 
 const DeleteUser = async (username, decodeduserName, encryptedusername) => {
     const responseObject = new ResponseObject();
@@ -180,5 +189,6 @@ module.exports = {
     extractUser,
     DeleteUser,
     SearchUser,
-    UserInfoExtract
+    UserInfoExtract,
+    PublicInfoExtract,
 };

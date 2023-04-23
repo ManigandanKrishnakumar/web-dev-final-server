@@ -8,7 +8,8 @@ const {
     extractUser,
     DeleteUser,
     SearchUser,
-    UserInfoExtract
+    UserInfoExtract,
+    PublicInfoExtract,
 } = require('../doa/user-data-controller');
 const { ResponseObject } = require('../Interfaces/ResponseObjects');
 const { ERR_MESSAGES } = require('../constants/app-constants');
@@ -91,38 +92,34 @@ userRouter.put(ROUTES.USER.UPDATE_USER, authenticateToken, async (req, res) => {
     }
 });
 
-userRouter.post(ROUTES.USER.SEARCH_USER, authenticateToken, async (req, res) => {
-    const {username} = req.body;
-    try {
-        const result = await SearchUser(username, req.decodeduserRole);
-        res.status(200).json(result);
-    } catch (error) {
-        if ( error.message === 'Not authenticated to search info') {
-        const result = new ResponseObject(
-            false,
-            ERR_MESSAGES.GENERAL.AUTHENTICATION_FAILED
-        );
-        res.status(401).json(result);
-        }
-        else if (error.message === 'User does not exist'){
-            const result = new ResponseObject(
-                false,
-                'User does not exist'
-            );
+userRouter.post(
+    ROUTES.USER.SEARCH_USER,
+    authenticateToken,
+    async (req, res) => {
+        const { username } = req.body;
+        try {
+            const result = await SearchUser(username, req.decodeduserRole);
             res.status(200).json(result);
-        }
-        else {
-            const result = new ResponseObject(
-                false,
-                ERR_MESSAGES.GENERAL.INTERNAL_SERVER_ERR
-            );
-            res.status(500).json(result);
-
+        } catch (error) {
+            if (error.message === 'Not authenticated to search info') {
+                const result = new ResponseObject(
+                    false,
+                    ERR_MESSAGES.GENERAL.AUTHENTICATION_FAILED
+                );
+                res.status(401).json(result);
+            } else if (error.message === 'User does not exist') {
+                const result = new ResponseObject(false, 'User does not exist');
+                res.status(200).json(result);
+            } else {
+                const result = new ResponseObject(
+                    false,
+                    ERR_MESSAGES.GENERAL.INTERNAL_SERVER_ERR
+                );
+                res.status(500).json(result);
+            }
         }
     }
-});
-
-
+);
 
 userRouter.delete(
     ROUTES.USER.DELETE_USER,
@@ -149,6 +146,20 @@ userRouter.delete(
 userRouter.get(ROUTES.USER.LIST_USERS, async (req, res) => {
     try {
         const result = await UserInfoExtract();
+        res.status(200).json(result);
+    } catch (error) {
+        const result = new ResponseObject(
+            false,
+            ERR_MESSAGES.GENERAL.INTERNAL_SERVER_ERR
+        );
+        res.status(500).json(result);
+    }
+});
+
+userRouter.post(ROUTES.USER.USER_PUBLIC_INFO, async (req, res) => {
+    const { username } = req.body;
+    try {
+        const result = await PublicInfoExtract(username);
         res.status(200).json(result);
     } catch (error) {
         const result = new ResponseObject(

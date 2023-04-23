@@ -5,8 +5,10 @@ const QUERIES = {
         UPDATE_USER: 'UPDATE users SET meta_data = ? WHERE user_name = ?',
         EXTRACT_USERINFO: 'SELECT meta_data FROM users WHERE user_name = ?',
         DELETE_USER: 'Delete from users WHERE user_name = ?',
-        SEARCH_USER: 'SELECT user_name, user_role, meta_data from users WHERE user_name LIKE ?',
+        SEARCH_USER:
+            'SELECT user_name, user_role, meta_data from users WHERE user_name LIKE ?',
         LIST_USERS: `SELECT user_name, meta_data FROM users`,
+        PUBLIC_INFO: `SELECT user_name, meta_data FROM users WHERE user_name = ?`,
     },
     SIGN_IN: {
         EXTRACT_PUBLICKEY: 'SELECT public_key FROM users WHERE user_name = ?',
