@@ -2,7 +2,11 @@ const { Router } = require('express');
 const { ROUTES } = require('../constants/route-constants');
 const { authenticateToken } = require('../middlewares/jwtverify');
 const { SpeedTest } = require('../Interfaces/AppInterfaces');
-const { saveTest, fetchTests } = require('../doa/speed-test-data-controller');
+const {
+    saveTest,
+    fetchTests,
+    deleteTests,
+} = require('../doa/speed-test-data-controller');
 
 const speedTestRouter = Router();
 
@@ -58,6 +62,23 @@ speedTestRouter.get(
     async (req, res) => {
         try {
             const result = await fetchTests(req.decodeduserName);
+            res.status(200).json(result);
+        } catch (error) {
+            const result = new ResponseObject(
+                false,
+                ERR_MESSAGES.GENERAL.INTERNAL_SERVER_ERR
+            );
+            res.status(500).json(result);
+        }
+    }
+);
+
+speedTestRouter.get(
+    ROUTES.SPEEDTEST.DELETE,
+    authenticateToken,
+    async (req, res) => {
+        try {
+            const result = await deleteTests(req.decodeduserName);
             res.status(200).json(result);
         } catch (error) {
             const result = new ResponseObject(
