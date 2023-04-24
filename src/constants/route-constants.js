@@ -28,6 +28,7 @@ const ROUTES = {
         BASE: '/speed-test',
         SAVE_TEST: '/save',
         FETCH: '/fetch',
+        DELETE: '/delete',
     },
     ACCESS_REQUESTS: {
         BASE: '/access-requests',

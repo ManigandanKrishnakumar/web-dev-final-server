@@ -59,6 +59,7 @@ accessRequestRouter.post(
     authenticateToken,
     async (req, res) => {
         try {
+            console.log('Here');
             const { username, meta_data, id } = req.body;
 
             await adminUpdatesUser(
