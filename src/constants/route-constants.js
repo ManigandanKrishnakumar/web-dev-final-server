@@ -13,8 +13,10 @@ const ROUTES = {
         CHECK_USERNAME: '/check-username',
         UPDATE_USER: '/update-user',
         DELETE_USER: '/delete-user',
-        SEARCH_USER: "/search-user",
+        SEARCH_USER: '/search-user',
         LOGGED_IN: '/logged-in',
+        LIST_USERS: '/list-users',
+        USER_PUBLIC_INFO: '/public-info',
     },
     ADMIN: {
         BASE: '/admin-dashboard',
